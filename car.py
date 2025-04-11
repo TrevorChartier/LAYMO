@@ -15,6 +15,8 @@ class Car:
         kit = ServoKit(channels=16)
         self.__steering = kit.servo[steering_pin]
         self.__motor = kit.continuous_servo[throttle_pin]
+        
+        self.set_steering(0)
 
     def set_steering(self, position: float):
         """
@@ -47,7 +49,7 @@ class Car:
         
         self.__motor.throttle = scaled_speed
     
-    def stop_car(self):
+    def stop(self):
         print("\nStopping car...")
         self.set_speed(0)
         self.set_steering(0)
