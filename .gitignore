@@ -1,5 +1,5 @@
 laymo_venv/
-__pycache__/
+/__pycache__/*
 *.pyc
 *.pyo
 .lgd-nfy0
