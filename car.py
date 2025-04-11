@@ -49,7 +49,7 @@ class Car:
         
         self.__motor.throttle = scaled_speed
     
-    def stop(self):
+    def stop(self, signum=None, frame=None):
         print("\nStopping car...")
         self.set_speed(0)
         self.set_steering(0)
