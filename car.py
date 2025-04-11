@@ -30,7 +30,7 @@ class Car:
         clamped_position = Car.__clamp(position, min_val=-1, max_val=1)
         angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)
         
-        self._steering.angle = self.__CENTER + angle_from_center
+        self.__steering.angle = self.__CENTER + angle_from_center
     
     def set_speed(self, speed: float):
         """
