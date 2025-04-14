@@ -6,6 +6,7 @@ Usage:
     frame = CameraManager.get_latest_frame()
 """
 from picamera2 import Picamera2
+import numpy as np
 
 class CameraManager:
     
