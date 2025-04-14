@@ -3,3 +3,4 @@ rpi-libcamera
 rpi-kms
 picamera2
 adafruit-circuitpython-servokit
+opencv-python-headless
