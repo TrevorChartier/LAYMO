@@ -61,7 +61,7 @@ def __preprocess(img: np.ndarray) -> np.ndarray:
     return img
 
 
-def _get_line_center_x(img: np.ndarray) -> int:
+def __get_line_center_x(img: np.ndarray) -> int:
     """"
     Computes the horizontal center (x-coordinate) of the bounding box that contains
     a blue line in the img.
@@ -78,7 +78,7 @@ def _get_line_center_x(img: np.ndarray) -> int:
 
     # Use a contour finding algorithm (built into OpenCV)
     # Might have to filter contours to get the one that is the line
-    # Return the horizontal center of the contour
+    # Return the vertical center of the contour
 
     # Below is a rather "dumbed down" approach that takes the average of a binary image
     # I left it here so you can visualize the result of running the script
