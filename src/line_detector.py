@@ -85,7 +85,6 @@ def __get_line_center_x(img: np.ndarray) -> int:
     # Maybe it will work well enough?? IDK
 
     # We should handle cases where the line isn't in the image
-    # ie length(rows)/length(img) is below some threshold
     rows, cols = np.where(img == 255)
     return np.round(np.mean(cols), 0)
 
