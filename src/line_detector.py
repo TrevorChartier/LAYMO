@@ -99,7 +99,7 @@ if __name__ == "__main__":
 
     start = time.time()
     processed_img = __preprocess(image)
-    line_center = _get_line_center_x(processed_img)
+    line_center = __get_line_center_x(processed_img)
     print("Processing time: ", np.round(time.time()-start, 6))
 
     import matplotlib.pyplot as plt
