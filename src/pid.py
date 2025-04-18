@@ -9,7 +9,11 @@ Usage:
 class PID:
     
     def __init__(self, ki: float, kp: float, kd: float):
-        pass
+        self.kp = kp
+        self.ki = ki
+        self.kd = kd
+        self.previous_error = 0.0
+        self.error_sum = 0.0 
     
     def calc_correction(self, error: float) -> float:
         """
