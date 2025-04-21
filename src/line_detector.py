@@ -24,8 +24,11 @@ def calc_error(img: np.ndarray, roi: tuple[float, float]):
                -1.0 indicates the line is at the far left,
                 0.0 indicates the line is perfectly centered,
                 1.0 indicates the line is at the far right.
+
+    Raises:
+        ValueError: bottom must be less than top, and both must be within the range [0, 1].
     """
-    
+
     # call crop on the image using roi
     # call preprocess
     # call get line center on preprocessed image
@@ -34,7 +37,7 @@ def calc_error(img: np.ndarray, roi: tuple[float, float]):
     pass
 
 
-def _crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
+def __crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
     """
     Crops the image vertically between the given proportional bounds.
 
@@ -47,8 +50,21 @@ def _crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
 
     Returns:
         np.ndarray: The cropped image.
+
+    Raises:
+        ValueError: See `calc_error`
     """
-    pass
+    if (bottom >= top or bottom < 0 or bottom > 1 or top < 0 or top > 1):
+        raise ValueError(
+            "Invalid crop parameters: expected 0 ≤ bottom < top ≤ 1."
+        )
+
+    img_height = img.shape[0]
+    bottom_row = img_height - (int)(img_height * bottom)
+    top_row = img_height - (int)(img_height * top)
+
+    cropped_img = img[top_row:bottom_row, :]
+    return cropped_img
 
 
 def __preprocess(img: np.ndarray) -> np.ndarray:
@@ -97,7 +113,8 @@ if __name__ == "__main__":
     image = np.load("test_images/no_light/right_straight_crack.npy")
 
     start = time.time()
-    processed_img = __preprocess(image)
+    cropped_img = __crop(image, bottom=0.1, top=0.50)
+    processed_img = __preprocess(cropped_img)
     line_center = __get_line_center_x(processed_img)
     print("Processing time: ", np.round(time.time()-start, 6))
 
@@ -111,6 +128,6 @@ if __name__ == "__main__":
 
     # Visualize intermediate step
     # Press any key in preview window to exit
-    cv2.imshow('img', processed_img)
+    cv2.imshow('img', cropped_img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
