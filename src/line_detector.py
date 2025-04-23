@@ -24,17 +24,51 @@ def calc_error(img: np.ndarray, roi: tuple[float, float]):
                -1.0 indicates the line is at the far left,
                 0.0 indicates the line is perfectly centered,
                 1.0 indicates the line is at the far right.
+        None: If no line is detected in the image
 
     Raises:
         ValueError: bottom must be less than top, and both must be within the range [0, 1].
     """
+    cropped_img = __crop(img, bottom=roi[0], top=roi[1])
+    processed_img = __preprocess(cropped_img)
+    line_center = __get_line_center_x(processed_img)
 
-    # call crop on the image using roi
-    # call preprocess
-    # call get line center on preprocessed image
-    # subtract line center from image center to get error
-    # normalize the error based on the width of the input image
-    pass
+    if line_center is None:
+        return None  # No line in frame
+
+    frame_center = img.shape[1] // 2
+    error = line_center - frame_center
+    normalized_error = error / frame_center  # Scale to range [-1,1]
+    return np.round(normalized_error, 2)
+
+
+def visualize(img: np.ndarray, roi: tuple[float, float]):
+    """ 
+    Display the image and overlay the calculated line center for visualization
+    and debugging
+
+    Args:
+        Takes the same parameters as `calc_error`
+
+    Additional Dependency: 
+        matplotlib
+    """
+    import matplotlib.pyplot as plt
+
+    start = time.time()
+    err = calc_error(img=img, roi=roi)
+    print("Processing time: ", np.round(time.time()-start, 6))
+    print("Error: ", err)
+
+    if err is not None:
+        # Recalculate line center from error value
+        line_center = err * (img.shape[1] // 2) + img.shape[1]//2
+        plt.imshow(img)
+        plt.axvline(x=np.mean(line_center), color='red',
+                    linewidth=2)  # Vertical line at x position
+        plt.show()
+    else:
+        print("No Line")
 
 
 def __crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
@@ -93,36 +127,5 @@ def __get_line_center_x(img: np.ndarray) -> int:
     """
     rows, cols = np.where(img == 255)
     if cols.size < .03 * img.size:
-        return None # Line is probably not in frame
+        return None  # Line is probably not in frame
     return np.round(np.mean(cols), 0)
-
-
-if __name__ == "__main__":
-    # This main function can be used for testing and visualizing
-    # the effects of our various funcitons as well as the processing time
-
-    # Load an image based on path
-    image = np.load("test_images/no_light/right_straight_crack.npy")
-
-    start = time.time()
-    cropped_img = __crop(image, bottom=0.1, top=0.50)
-    processed_img = __preprocess(cropped_img)
-    line_center = __get_line_center_x(processed_img)
-    print("Processing time: ", np.round(time.time()-start, 6))
-
-    import matplotlib.pyplot as plt
-
-    # Visualize the image with the detected center of the line
-    if line_center is not None:
-        plt.imshow(image)
-        plt.axvline(x=np.mean(line_center), color='red',
-                    linewidth=2)  # Vertical line at x position
-        plt.show()
-    else:
-        print("No Line")
-
-    # Visualize intermediate step
-    # Press any key in preview window to exit
-    cv2.imshow('img', cropped_img)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
