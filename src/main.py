@@ -21,10 +21,10 @@ signal.signal(signal.SIGINT, car.stop)
 signal.signal(signal.SIGTERM, car.stop) 
 
 camera = CameraManager()
-steering_controller = PID(kp=1, ki=0, kd=0)
+steering_controller = PID(kp=1.5, ki=0, kd=0)
 time.sleep(1)
 
-RUN_TIME = 5 # Runtime in seconds
+RUN_TIME = 20 # Runtime in seconds
 NUM_ITERATIONS = 32 * RUN_TIME # Approx 32hz
 
 print("Beginning Control Loop")
@@ -33,12 +33,14 @@ for i in range(NUM_ITERATIONS):
     error = line_detector.calc_error(frame, roi=[0.1, 0.6])
     if error is None:
         print("No Line Detected")
+        car.set_speed(0)
         continue
     steering_control_output = steering_controller.calc_output(error)
+    print("Steering Controller Output: ", steering_control_output)
     car.set_steering(steering_control_output)
 
-    if (i//10) % 2 == 0:
-        car.set_speed(0.2)
+    if (i//10) % 3 == 0:
+        car.set_speed(0.24)
     else:
         car.set_speed(0)
 
