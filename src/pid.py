@@ -9,11 +9,11 @@ Usage:
 class PID:
     
     def __init__(self, ki: float, kp: float, kd: float):
-        self.kp = kp
-        self.ki = ki
-        self.kd = kd
-        self.previous_error = 0.0
-        self.error_sum = 0.0 
+        self.__kp = kp
+        self.__ki = ki
+        self.__kd = kd
+        self.__previous_error = 0.0
+        self.__error_sum = 0.0 
     
     def calc_correction(self, error: float) -> float:
         """
@@ -27,4 +27,4 @@ class PID:
         Returns:
             float: The computed correction value based on the proportional, 
                 integral, and derivative terms.
-    """
+        """
