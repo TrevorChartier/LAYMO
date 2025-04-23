@@ -17,7 +17,7 @@ class PID:
         self.__previous_error = 0.0
         self.__error_sum = 0.0
 
-    def calc_correction(self, error: float) -> float:
+    def calc_output(self, error: float) -> float:
         """
         Computes the control output (correction) using the PID formula
         based on the current error value.
