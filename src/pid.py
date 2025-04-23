@@ -1,19 +1,20 @@
-"""
-This Module Implements the PID Class for Creating
-Proportional Integral Derivative Controllers
+"""This Module Implements the PID Class"""
 
-Usage:
-    controller = PID(kp=1.0,ki=1.0,kd=1.0)
-    correction = controller.calc_correction(error=4.2)
-"""
 class PID:
+    """"
+    Class for Creating Proportional Integral Derivative Controllers
+    
+    Usage:
+        controller = PID(kp=1.0,ki=1.0,kd=1.0)
+        correction = controller.calc_correction(error=4.2)
+    """
     
     def __init__(self, ki: float, kp: float, kd: float):
         self.__kp = kp
         self.__ki = ki
         self.__kd = kd
         self.__previous_error = 0.0
-        self.__error_sum = 0.0 
+        self.__error_sum = 0.0
     
     def calc_correction(self, error: float) -> float:
         """
