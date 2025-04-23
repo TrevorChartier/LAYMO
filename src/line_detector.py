@@ -2,6 +2,7 @@
 This module defines the functions necessary for detecting how far the
 center of a blue line is from the center of an img.
 """
+
 import numpy as np
 import cv2
 import time
@@ -9,15 +10,17 @@ import time
 
 def calc_error(img: np.ndarray, roi: tuple[float, float]):
     """
-    Calculates a normalized error value representing how far the detected line is from the horizontal center 
-    of the image within a specified vertical region of interest (ROI).
+    Calculates a normalized error value representing how far the detected line is from the
+    horizontal center of the image within a specified vertical region of interest (ROI).
 
     Args:
         img (np.ndarray): The input image in which to detect the line.
-        roi (tuple of float): A tuple (bottom, top) specifying the vertical region of interest as proportional 
-                              values between 0.0 and 1.0. 
-                              - `bottom` defines the lower vertical bound of the ROI (0.0 = bottom of the image).
-                              - `top` defines the upper vertical bound of the ROI (1.0 = top of the image).
+        roi (tuple of float): A tuple (bottom, top) specifying the vertical region of
+                              interest as proportional values between 0.0 and 1.0. 
+                              - `bottom` defines the lower vertical bound of the ROI 
+                                (0.0 = bottom of the image).
+                              - `top` defines the upper vertical bound of the ROI 
+                                (1.0 = top of the image).
 
     Returns:
         float: A normalized error value in the range [-1, 1], where:
