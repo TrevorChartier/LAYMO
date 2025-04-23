@@ -91,17 +91,9 @@ def __get_line_center_x(img: np.ndarray) -> int:
         detected line in the img.
 
     """
-
-    # Use a contour finding algorithm (built into OpenCV)
-    # Might have to filter contours to get the one that is the line
-    # Return the vertical center of the contour
-
-    # Below is a rather "dumbed down" approach that takes the average of a binary image
-    # I left it here so you can visualize the result of running the script
-    # Maybe it will work well enough?? IDK
-
-    # We should handle cases where the line isn't in the image
     rows, cols = np.where(img == 255)
+    if cols.size < .03 * img.size:
+        return None # Line is probably not in frame
     return np.round(np.mean(cols), 0)
 
 
@@ -121,10 +113,13 @@ if __name__ == "__main__":
     import matplotlib.pyplot as plt
 
     # Visualize the image with the detected center of the line
-    plt.imshow(image)
-    plt.axvline(x=np.mean(line_center), color='red',
-                linewidth=2)  # Vertical line at x position
-    plt.show()
+    if line_center is not None:
+        plt.imshow(image)
+        plt.axvline(x=np.mean(line_center), color='red',
+                    linewidth=2)  # Vertical line at x position
+        plt.show()
+    else:
+        print("No Line")
 
     # Visualize intermediate step
     # Press any key in preview window to exit
