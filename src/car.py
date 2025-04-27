@@ -42,14 +42,12 @@ class Car:
             The valid range is between [-1, 1] where a value of 0 corresponds
             to straight. If None, no steering adjustment is made.
         """
-        if position is None:
-            pass
+        if position is not None:
+            clamped_position = Car.__clamp(position, min_val=-1, max_val=1)
+            self.__current_steering_pos = clamped_position
+            angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)
 
-        clamped_position = Car.__clamp(position, min_val=-1, max_val=1)
-        self.__current_steering_pos = clamped_position
-        angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)
-
-        self.__steering.angle = self.__CENTER + angle_from_center       
+            self.__steering.angle = self.__CENTER + angle_from_center       
 
     def set_speed(self, speed: float):
         """
@@ -61,7 +59,7 @@ class Car:
             negative values are reverse and 0 is stopped.
         """
         clamped_speed = Car.__clamp(speed, min_val=-1, max_val=1)
-        scaled_speed = round(clamped_speed * self.__TOP_SPEED, 2)
+        scaled_speed = round(clamped_speed * self.__MAX_SPEED, 2)
 
         if (abs(scaled_speed) < self.__MIN_SPEED):
             scaled_speed = 0
