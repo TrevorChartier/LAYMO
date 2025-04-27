@@ -1,5 +1,7 @@
 """This Module Implements the PID Class"""
 
+import numpy as np
+
 
 class PID:
     """
@@ -38,4 +40,4 @@ class PID:
                   + self.__ki * self.__error_sum)
         self.__previous_error = error
 
-        return output
+        return np.round(output, 2)

@@ -21,7 +21,7 @@ signal.signal(signal.SIGINT, car.stop)
 signal.signal(signal.SIGTERM, car.stop) 
 
 camera = CameraManager()
-steering_controller = PID(kp=1, ki=0, kd=0)
+steering_controller = PID(kp=1.5, ki=0, kd=0)
 throttle_controller = PID(kp=3.75, ki=0, kd=0)
 time.sleep(1)
 
@@ -31,7 +31,6 @@ def set_speed_manual(iteration):
         car.set_speed(0.2)
     else:
         car.set_speed(0)
-
 
 RUN_TIME = 5 # Runtime in seconds
 NUM_ITERATIONS = 32 * RUN_TIME # Approx 32hz
