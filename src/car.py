@@ -25,6 +25,11 @@ class Car:
         self.__motor = kit.continuous_servo[throttle_pin]
 
         self.set_steering(0)
+        self.__current_steering_pos = 0
+
+    def current_steering_pos(self):
+        """" Retrieves the current steering position as a value in the range [-1,1]"""
+        return self.__current_steering_pos
 
     def set_steering(self, position: float):
         """
@@ -40,9 +45,10 @@ class Car:
             pass
 
         clamped_position = Car.__clamp(position, min_val=-1, max_val=1)
+        self.__current_steering_pos = clamped_position
         angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)
 
-        self.__steering.angle = self.__CENTER + angle_from_center
+        self.__steering.angle = self.__CENTER + angle_from_center       
 
     def set_speed(self, speed: float):
         """
