@@ -32,9 +32,13 @@ class Car:
         clamps and adjusts to the range of the cars physical steering limits.
 
         Args:
-            position (int): Position from center to set the steering. The valid range
-            is between [-1, 1] where a value of 0 corresponds to straight.
+            position (int or None): Position from center to set the steering. 
+            The valid range is between [-1, 1] where a value of 0 corresponds
+            to straight. If None, no steering adjustment is made.
         """
+        if position is None:
+            pass
+
         clamped_position = Car.__clamp(position, min_val=-1, max_val=1)
         angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)
 
