@@ -14,18 +14,19 @@ class Car:
         car.set_steering(0.5)
     """
     __MIN_SPEED = 0.17
-    __TOP_SPEED = 0.8
 
     __CENTER = 83
     __MAX_ANGLE = 35
 
-    def __init__(self, steering_pin: int, throttle_pin: int):
+    def __init__(self, steering_pin: int, throttle_pin: int, max_speed: float = 0.8):
         kit = ServoKit(channels=16)
         self.__steering = kit.servo[steering_pin]
         self.__motor = kit.continuous_servo[throttle_pin]
 
         self.set_steering(0)
         self.__current_steering_pos = 0
+        
+        self.__MAX_SPEED = min(0.8, max_speed)
 
     def current_steering_pos(self):
         """" Retrieves the current steering position as a value in the range [-1,1]"""
