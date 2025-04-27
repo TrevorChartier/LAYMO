@@ -24,16 +24,19 @@ class PID:
         based on the current error value.
 
         Args:
-            error (float): The difference between the desired setpoint 
-                        and the current process value.
+            error (float or None): The difference between the desired setpoint 
+            and the current process value. If None, output is None.
 
         Returns:
             float: The computed correction value based on the proportional, 
-                integral, and derivative terms.
+            integral, and derivative terms.
         """
+        if error is None:
+            return None
+        
         self.__error_sum += error
         output = (self.__kp * error
-                  + self.__kd * (error - self.__previous_error)
+                  - self.__kd * (error - self.__previous_error)
                   + self.__ki * self.__error_sum)
         self.__previous_error = error
 

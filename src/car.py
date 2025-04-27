@@ -14,17 +14,23 @@ class Car:
         car.set_steering(0.5)
     """
     __MIN_SPEED = 0.17
-    __TOP_SPEED = 0.8
 
     __CENTER = 83
     __MAX_ANGLE = 35
 
-    def __init__(self, steering_pin: int, throttle_pin: int):
+    def __init__(self, steering_pin: int, throttle_pin: int, max_speed: float = 0.8):
         kit = ServoKit(channels=16)
         self.__steering = kit.servo[steering_pin]
         self.__motor = kit.continuous_servo[throttle_pin]
 
         self.set_steering(0)
+        self.__current_steering_pos = 0
+        
+        self.__MAX_SPEED = min(0.8, max_speed)
+
+    def current_steering_pos(self):
+        """" Retrieves the current steering position as a value in the range [-1,1]"""
+        return self.__current_steering_pos
 
     def set_steering(self, position: float):
         """
@@ -32,13 +38,18 @@ class Car:
         clamps and adjusts to the range of the cars physical steering limits.
 
         Args:
-            position (int): Position from center to set the steering. The valid range
-            is between [-1, 1] where a value of 0 corresponds to straight.
+            position (int or None): Position from center to set the steering. 
+            The valid range is between [-1, 1] where a value of 0 corresponds
+            to straight. If None, no steering adjustment is made.
         """
+        if position is None:
+            pass
+
         clamped_position = Car.__clamp(position, min_val=-1, max_val=1)
+        self.__current_steering_pos = clamped_position
         angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)
 
-        self.__steering.angle = self.__CENTER + angle_from_center
+        self.__steering.angle = self.__CENTER + angle_from_center       
 
     def set_speed(self, speed: float):
         """
