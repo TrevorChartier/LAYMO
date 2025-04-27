@@ -31,7 +31,7 @@ class PID:
         """
         self.__error_sum += error
         output = (self.__kp * error
-                  + self.__kd * (error - self.__previous_error)
+                  - self.__kd * (error - self.__previous_error)
                   + self.__ki * self.__error_sum)
         self.__previous_error = error
 
