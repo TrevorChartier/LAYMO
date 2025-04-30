@@ -43,15 +43,9 @@ for i in range(NUM_ITERATIONS):
     steering_control_output = steering_controller.calc_output(steering_error)
     car.set_steering(steering_control_output)
 
-    if steering_error is None and (abs(car.current_steering_pos()) < 0.75):
+    if steering_error is None and (abs(car.current_steering_pos()) < 0.9):
         break # Reached the end of the line
 
-    # Adjust speed
-    throttle_error = abs(line_detector.calc_error(frame, roi=[0.3,1]))
-    if throttle_error is not None:
-        throttle_control_output = throttle_controller.calc_output(throttle_error)
-        car.set_speed(1/(throttle_control_output + 1))
-    else:
-        set_speed_manual(i)
+    set_speed_manual(i)
 
 car.stop()
