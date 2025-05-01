@@ -1,0 +1,16 @@
+[project]
+name = "laymo"
+version = "0.1.0"
+dependencies = [
+    "wheel",
+    "rpi-libcamera",
+    "rpi-kms",
+    "picamera2",
+    "adafruit-circuitpython-servokit",
+    "opencv-python-headless",
+    "matplotlib"
+]
+
+[tool.setuptools]
+packages = ["laymo"]
+package-dir = { "laymo" = "src" }
