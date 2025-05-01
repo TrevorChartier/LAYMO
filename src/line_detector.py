@@ -5,7 +5,6 @@ center of a blue line is from the center of an img.
 
 import numpy as np
 import cv2
-import time
 
 
 def calc_error(img: np.ndarray, roi: tuple[float, float]):
@@ -33,7 +32,7 @@ def calc_error(img: np.ndarray, roi: tuple[float, float]):
         ValueError: bottom must be less than top, and both must be within the range [0, 1].
     """
     cropped_img = __crop(img, bottom=roi[0], top=roi[1])
-    processed_img = __preprocess(cropped_img)
+    processed_img = preprocess(cropped_img)
     line_center = __get_line_center_x(processed_img)
 
     if line_center is None:
@@ -43,35 +42,6 @@ def calc_error(img: np.ndarray, roi: tuple[float, float]):
     error = line_center - frame_center
     normalized_error = error / frame_center  # Scale to range [-1,1]
     return np.round(normalized_error, 2)
-
-
-def visualize(img: np.ndarray, roi: tuple[float, float]):
-    """ 
-    Display the image and overlay the calculated line center for visualization
-    and debugging
-
-    Args:
-        Takes the same parameters as `calc_error`
-
-    Additional Dependency: 
-        matplotlib
-    """
-    import matplotlib.pyplot as plt
-
-    start = time.time()
-    err = calc_error(img=img, roi=roi)
-    print("Processing time: ", np.round(time.time()-start, 6))
-    print("Error: ", err)
-
-    if err is not None:
-        # Recalculate line center from error value
-        line_center = err * (img.shape[1] // 2) + img.shape[1]//2
-        plt.imshow(img)
-        plt.axvline(x=np.mean(line_center), color='red',
-                    linewidth=2)  # Vertical line at x position
-        plt.show()
-    else:
-        print("No Line")
 
 
 def __crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
@@ -104,7 +74,7 @@ def __crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
     return cropped_img
 
 
-def __preprocess(img: np.ndarray) -> np.ndarray:
+def preprocess(img: np.ndarray) -> np.ndarray:
     """Converts (BGR) image to a binary image based on blue channel"""
     img = cv2.GaussianBlur(img, (23, 23), 0)
     threshold = 220
