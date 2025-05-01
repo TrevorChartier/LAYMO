@@ -3,3 +3,4 @@ laymo_venv/
 *.pyc
 *.pyo
 .lgd-nfy0
+*.egg-info
