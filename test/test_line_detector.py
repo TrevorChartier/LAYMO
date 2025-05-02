@@ -9,7 +9,7 @@ from laymo.line_detector import calc_error, preprocess
 cam = CameraManager()
 img = cam.get_latest_frame()
 filepath = "test/test_images"
-roi = [0.05,0.5]
+roi = [0.1,0.6]
 
 start = time.time()
 err = calc_error(img=img, roi=roi)
@@ -35,3 +35,7 @@ plt.savefig(f'{filepath}/detected_line.png')
 # Write binary image after processing to file
 processed_img = preprocess(img) 
 cv2.imwrite(f'{filepath}/processed_image.png', processed_img)
+
+# Write blue channel of image to file
+blue_channel = img[:, :, 0]
+cv2.imwrite(f'{filepath}/blue_channel_image.png', blue_channel)
