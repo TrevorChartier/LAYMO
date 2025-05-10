@@ -4,19 +4,32 @@ import subprocess
 import sys
 import signal
 import time
+import numpy as np
 
 import laymo.line_detector as line_detector
+from laymo.visualize import visualize
 
 from laymo.car import Car
 from laymo.camera_manager import CameraManager
 from laymo.pid import PID
 from laymo.params import Params
+from laymo.logger import Logger
 
 
-car = Car(steering_pin=Params.STEERING_PIN, throttle_pin=Params.THROTTLE_PIN)
+logger = Logger(
+    path="data/log_video.mp4",
+    fps = 30.0
+)
+car = Car(
+    steering_pin=Params.STEERING_PIN,
+    throttle_pin=Params.THROTTLE_PIN
+)
 camera = CameraManager()
 steering_controller = PID(
-    kp=Params.KP_STEER, ki=Params.KI_STEER, kd=Params.KD_STEER)
+    kp=Params.KP_STEER,
+    ki=Params.KI_STEER,
+    kd=Params.KD_STEER
+)
 
 
 def handle_exit(signum, frame):
@@ -42,29 +55,34 @@ def set_speed_manual(i):
 
 
 def control_loop():
+    start = time.time()
     time_off_line = 0
     for i in range(Params.NUM_ITERATIONS):
         if is_throttled():
             print("UNDERVOLTAGE DETECTED")
-            car.stop()
+            break
 
         set_speed_manual(i)
-        frame = camera.get_latest_frame()
-        steering_error = line_detector.calc_error(frame, roi=[0.2, 0.8])
-
+        frame = camera.get_latest_frame()  # Capture the latest frame
+        steering_error = line_detector.calc_error(frame, roi=Params.ROI_STEER)
+        
         if steering_error is None:
             if (abs(car.current_steering_pos()) > Params.STEERING_THRESHOLD
                     and time_off_line < Params.TIME_OFF_LINE_LIMIT):
                 time_off_line += 1
                 continue  # Likely went off line, try to recover
             print("END OF LINE DETECTED")
-            car.stop()
             break
 
         time_off_line = 0
 
         output = steering_controller.calc_output(steering_error)
         car.set_steering(output)
+        
+        img = visualize(frame, steering_error, car.current_steering_pos())
+        logger.write(img)
+        
+    print(f"FPS: {np.round(i / (time.time() - start), 2)}")
     car.stop()
 
 
@@ -72,3 +90,4 @@ if __name__ == "__main__":
     print("Beginning Control Loop")
     time.sleep(1)
     control_loop()
+    logger.close()
