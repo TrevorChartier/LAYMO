@@ -5,11 +5,12 @@ import cv2
 
 from laymo.camera_manager import CameraManager
 from laymo.line_detector import calc_error, preprocess
+from laymo.params import Params
 
 cam = CameraManager()
 img = cam.get_latest_frame()
-filepath = "test/test_images"
-roi = [0.1,0.6]
+filepath = "data"
+roi = Params.ROI_STEER
 
 start = time.time()
 err = calc_error(img=img, roi=roi)

@@ -5,12 +5,12 @@ import sys
 import signal
 import time
 
-import line_detector
+import laymo.line_detector as line_detector
 
-from car import Car
-from camera_manager import CameraManager
-from pid import PID
-from params import Params
+from laymo.car import Car
+from laymo.camera_manager import CameraManager
+from laymo.pid import PID
+from laymo.params import Params
 
 
 car = Car(steering_pin=Params.STEERING_PIN, throttle_pin=Params.THROTTLE_PIN)

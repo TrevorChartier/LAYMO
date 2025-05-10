@@ -6,6 +6,8 @@ center of a blue line is from the center of an img.
 import numpy as np
 import cv2
 
+from laymo.params import Params
+
 
 def calc_error(img: np.ndarray, roi: tuple[float, float]):
     """
@@ -77,10 +79,9 @@ def __crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
 def preprocess(img: np.ndarray) -> np.ndarray:
     """Converts (BGR) image to a binary image based on blue channel"""
     img = cv2.GaussianBlur(img, (23, 23), 0)
-    threshold = 220
     img = img[:, :, 0]
-    img[img >= threshold] = 255
-    img[img < threshold] = 0
+    img[img >= Params.BINARY_THRESHOLD] = 255
+    img[img < Params.BINARY_THRESHOLD] = 0
     return img
 
 
@@ -99,6 +100,6 @@ def __get_line_center_x(img: np.ndarray) -> int:
 
     """
     rows, cols = np.where(img == 255)
-    if cols.size < .03 * img.size:
+    if cols.size < Params.LINE_DETECTED_THRESHOLD * img.size:
         return None  # Line is probably not in frame
     return np.round(np.mean(cols), 0)

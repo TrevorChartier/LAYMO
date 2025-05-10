@@ -13,11 +13,15 @@ class Params():
     
     # Runtime Settings
     __LOOP_HZ = 32
-    __RUNTIME_SECS = 25
+    __RUNTIME_SECS = 10
     NUM_ITERATIONS = __LOOP_HZ * __RUNTIME_SECS
     
-    # Image Processing
-    ROI_STEER = [0.2, 0.5]
+    # Image Processing (main.py)
+    ROI_STEER = [0.1, 0.5]
+    
+    # Image Processing (line_detector.py)
+    BINARY_THRESHOLD = 220
+    LINE_DETECTED_THRESHOLD = 0.03
     
     # Second Chance Thresholds
     STEERING_THRESHOLD = 0.7
