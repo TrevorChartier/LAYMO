@@ -16,7 +16,7 @@ def visualize(img: np.ndarray, error: float, steering: float = None) -> np.ndarr
     processed_rgb = cv2.cvtColor(processed, cv2.COLOR_GRAY2BGR)
 
     # Blend preprocessed image with original image
-    overlay = cv2.addWeighted(processed_rgb, 1.0, img, 0.4, 0)
+    overlay = cv2.addWeighted(processed_rgb, 0.9, img, 0.8, 0)
 
     # Draw horizontal lines for ROI
     y1 = int(img_h * (1 - roi[0]))
@@ -29,7 +29,7 @@ def visualize(img: np.ndarray, error: float, steering: float = None) -> np.ndarr
         center_x = int(error * (img_w // 2) + img_w // 2)
         cv2.line(overlay, (center_x, 0), (center_x, img_h), (0, 0, 255), 2)
 
-    # Draw text boxes
+    # Add Data as Text
     cv2.putText(overlay, f"Error: {error}", (10, 28), cv2.FONT_HERSHEY_SIMPLEX,
                 0.6, (255, 0, 0), 2, cv2.LINE_AA)
     cv2.putText(overlay, f"Steering: {steering}", (10, 62), cv2.FONT_HERSHEY_SIMPLEX,
