@@ -26,3 +26,7 @@ class Params():
     # Second Chance Thresholds
     STEERING_THRESHOLD = 0.7
     TIME_OFF_LINE_LIMIT = 45
+    
+    # Camera Params
+    FRAME_WIDTH = 640  
+    FRAME_HEIGHT = 480 
