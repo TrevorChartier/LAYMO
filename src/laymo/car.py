@@ -45,7 +45,9 @@ class Car:
         if position is not None:
             clamped_position = Car.__clamp(position, min_val=-1, max_val=1)
             self.__current_steering_pos = clamped_position
-            angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)      
+            angle_from_center = round(clamped_position * self.__MAX_ANGLE, 2)
+            
+            self.__steering.angle = self.__CENTER + angle_from_center      
 
     def set_speed(self, speed: float):
         """
