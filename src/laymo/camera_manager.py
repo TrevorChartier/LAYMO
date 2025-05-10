@@ -4,6 +4,7 @@ from picamera2 import Picamera2
 from libcamera import ColorSpace
 import numpy as np
 
+from laymo.params import Params
 
 class CameraManager:
     """ 
@@ -20,7 +21,7 @@ class CameraManager:
         camera_config = self.__camera.create_video_configuration(
             colour_space=ColorSpace.Sycc(),
             main={
-                "size": (640, 480),
+                "size": (Params.FRAME_WIDTH, Params.FRAME_HEIGHT),
                 "format": "RGB888",
             },
         )
