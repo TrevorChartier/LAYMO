@@ -49,20 +49,31 @@ def set_speed_manual(i):
 def control_loop():
     start = time.time()
     time_off_line = 0
+    steering_error = 0
     for i in range(Params.NUM_ITERATIONS):
         set_speed_manual(i)
-        frame = camera.get_latest_frame()  # Capture the latest frame
-        steering_error = line_detector.calc_error(frame, roi=Params.ROI_STEER)
+        frame = camera.get_latest_frame()
         
-        if steering_error is None:
-            if (abs(car.current_steering_pos()) > Params.STEERING_THRESHOLD
-                    and time_off_line < Params.TIME_OFF_LINE_LIMIT):
-                time_off_line += 1 # Likely went off line, try to recover
-            else:
+        try:
+            steering_error = line_detector.calc_error(frame, roi=Params.ROI_STEER)
+            time_off_line = 0 # reset on successful detection
+            
+        except line_detector.BadFrame:
+            img = visualize(frame, None, car.current_steering_pos())
+            logger.write(img)
+            continue
+        
+        except line_detector.LineNotDetected:
+            end_of_line = (
+                abs(steering_error) < Params.STEERING_THRESHOLD 
+                or time_off_line > Params.TIME_OFF_LINE_LIMIT
+            )
+            if end_of_line:
                 print("END OF LINE DETECTED")
                 break
-        else:
-            time_off_line = 0
+            # Attempt recovery using previous steering direction   
+            time_off_line += 1
+            steering_error = np.sign(steering_error) * 1
 
         output = steering_controller.calc_output(steering_error)
         car.set_steering(output)
