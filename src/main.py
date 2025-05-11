@@ -51,7 +51,7 @@ def is_throttled():
 
 def set_speed_manual(i):
     """Method to manually pulse throttle"""
-    car.set_speed(0.23 if (i // 15) % 3 == 0 else 0.0)
+    car.set_speed(0.0 if (i//10) % 8  == 0 else 0.25)
 
 
 def control_loop():
@@ -69,12 +69,12 @@ def control_loop():
         if steering_error is None:
             if (abs(car.current_steering_pos()) > Params.STEERING_THRESHOLD
                     and time_off_line < Params.TIME_OFF_LINE_LIMIT):
-                time_off_line += 1
-                continue  # Likely went off line, try to recover
-            print("END OF LINE DETECTED")
-            break
-
-        time_off_line = 0
+                time_off_line += 1 # Likely went off line, try to recover
+            else:
+                print("END OF LINE DETECTED")
+                break
+        else:
+            time_off_line = 0
 
         output = steering_controller.calc_output(steering_error)
         car.set_steering(output)
