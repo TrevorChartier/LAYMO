@@ -19,12 +19,16 @@ class CameraManager:
 
         # Could play around with .align_configuration() for speed?
         camera_config = self.__camera.create_video_configuration(
-            colour_space=ColorSpace.Sycc(),
             main={
                 "size": (Params.FRAME_WIDTH, Params.FRAME_HEIGHT),
-                "format": "RGB888",
+                "format": "RGB888"
             },
+            controls={
+                "FrameDurationLimits": (int(1e6 / 50), int(1e6 / 50))  # Request 90 FPS
+            },
+            colour_space=ColorSpace.Sycc()
         )
+
         self.__camera.configure(camera_config)
         self.__camera.start()
 

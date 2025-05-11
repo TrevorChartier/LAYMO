@@ -9,7 +9,7 @@ class Logger():
     def __init__(self, path, fps):
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')  
         self.writer = cv2.VideoWriter('data/output_video.mp4',
-                              fourcc, 30.0,
+                              fourcc, 50.0,
                               (Params.FRAME_WIDTH, Params.FRAME_HEIGHT)
                               )
         

@@ -9,10 +9,10 @@ class Params():
     # Controller Gains
     KP_STEER = 1.6
     KI_STEER = 0.0
-    KD_STEER = 4.3
+    KD_STEER = 6.8
     
     # Runtime Settings
-    __LOOP_HZ = 34.4
+    __LOOP_HZ = 53
     __RUNTIME_SECS = 20
     NUM_ITERATIONS = int(__LOOP_HZ * __RUNTIME_SECS)
     
@@ -26,7 +26,7 @@ class Params():
     
     # Second Chance Thresholds
     STEERING_THRESHOLD = 0.7
-    TIME_OFF_LINE_LIMIT = 25
+    TIME_OFF_LINE_LIMIT = 40
     
     # Camera Params
     FRAME_WIDTH = 640  
