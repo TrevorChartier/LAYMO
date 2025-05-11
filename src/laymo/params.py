@@ -12,9 +12,9 @@ class Params():
     KD_STEER = 4.3
     
     # Runtime Settings
-    __LOOP_HZ = 34
-    __RUNTIME_SECS = 10
-    NUM_ITERATIONS = __LOOP_HZ * __RUNTIME_SECS
+    __LOOP_HZ = 34.4
+    __RUNTIME_SECS = 20
+    NUM_ITERATIONS = int(__LOOP_HZ * __RUNTIME_SECS)
     
     # Image Processing (main.py)
     ROI_STEER = [0.1, 0.4]
