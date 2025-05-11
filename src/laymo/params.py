@@ -7,25 +7,26 @@ class Params():
     STEERING_PIN = 1
     
     # Controller Gains
-    KP_STEER = 1.5
+    KP_STEER = 1.6
     KI_STEER = 0.0
-    KD_STEER = 0.0
+    KD_STEER = 4.3
     
     # Runtime Settings
-    __LOOP_HZ = 32
+    __LOOP_HZ = 34
     __RUNTIME_SECS = 10
     NUM_ITERATIONS = __LOOP_HZ * __RUNTIME_SECS
     
     # Image Processing (main.py)
-    ROI_STEER = [0.1, 0.5]
+    ROI_STEER = [0.1, 0.4]
     
     # Image Processing (line_detector.py)
     BINARY_THRESHOLD = 220
-    LINE_DETECTED_THRESHOLD = 0.03
+    MIN_LINE_THRESHOLD = 0.03
+    MAX_LINE_THRESHOLD = 0.4
     
     # Second Chance Thresholds
     STEERING_THRESHOLD = 0.7
-    TIME_OFF_LINE_LIMIT = 45
+    TIME_OFF_LINE_LIMIT = 25
     
     # Camera Params
     FRAME_WIDTH = 640  
