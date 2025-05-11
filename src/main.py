@@ -41,14 +41,6 @@ for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
     signal.signal(sig, handle_exit)
 
 
-def is_throttled():
-    """Checks for Undervoltages"""
-    status = subprocess.run(['vcgencmd', 'get_throttled'],
-                            capture_output=True, text=True, check=True)
-    status = status.stdout.strip()
-    return status in ['throttled=0x1', 'throttled=0x4']
-
-
 def set_speed_manual(i):
     """Method to manually pulse throttle"""
     car.set_speed(0.0 if (i//10) % 8  == 0 else 0.25)
@@ -58,10 +50,6 @@ def control_loop():
     start = time.time()
     time_off_line = 0
     for i in range(Params.NUM_ITERATIONS):
-        if is_throttled():
-            print("UNDERVOLTAGE DETECTED")
-            break
-
         set_speed_manual(i)
         frame = camera.get_latest_frame()  # Capture the latest frame
         steering_error = line_detector.calc_error(frame, roi=Params.ROI_STEER)
