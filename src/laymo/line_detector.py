@@ -9,6 +9,12 @@ import cv2
 from laymo.params import Params
 
 
+class LineNotDetected(Exception): pass
+
+
+class BadFrame(Exception): pass
+
+
 def calc_error(img: np.ndarray, roi: tuple[float, float]):
     """
     Calculates a normalized error value representing how far the detected line is from the
@@ -97,9 +103,14 @@ def __get_line_center_x(img: np.ndarray) -> int:
     Returns:
         int: The column index of the center of the bounding box surrounding the
         detected line in the img.
-
+        
+    Raises:
+        LineNotDetected: If too few pixels are detected as the line.
+        BadFrame: If too many pixels are detected as the line. 
     """
     rows, cols = np.where(img == 255)
-    if cols.size < Params.LINE_DETECTED_THRESHOLD * img.size:
-        return None  # Line is probably not in frame
+    if cols.size < Params.MIN_LINE_THRESHOLD * img.size:
+        raise LineNotDetected()
+    if cols.size > Params.MAX_LINE_THRESHOLD * img.size:
+        raise BadFrame()
     return np.round(np.mean(cols), 0)
