@@ -2,6 +2,7 @@
 
 import sys
 import signal
+import time
 from adafruit_servokit import ServoKit
 
 
@@ -69,8 +70,11 @@ class Car:
     def stop(self, signum=None, frame=None):
         """Stop the car and exit the program"""
         print("\nStopping car...")
-        self.set_speed(0)
         self.set_steering(0)
+        self.set_speed(-0.9)
+        time.sleep(0.45)
+        self.set_speed(0)
+        sys.exit(1)
 
     def __clamp(value, min_val, max_val):
         return min(max(value, min_val), max_val)
