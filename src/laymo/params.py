@@ -9,7 +9,7 @@ class Params():
     # Controller Gains
     KP_STEER = 1.6
     KI_STEER = 0.0
-    KD_STEER = 6.8
+    KD_STEER = 7.2
     
     # Runtime Settings
     __LOOP_HZ = 53
@@ -17,7 +17,7 @@ class Params():
     NUM_ITERATIONS = int(__LOOP_HZ * __RUNTIME_SECS)
     
     # Image Processing (main.py)
-    ROI_STEER = [0.1, 0.4]
+    ROI_STEER = [0.48, 0.7]
     
     # Image Processing (line_detector.py)
     BINARY_THRESHOLD = 220
