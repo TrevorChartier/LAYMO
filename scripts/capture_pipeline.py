@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 
 from laymo.camera_manager import CameraManager
-from laymo.line_detector import calc_error, preprocess
+from laymo.line_detector import calc_error, preprocess, BadFrame, LineNotDetected
 from laymo.params import Params
 from laymo.pid import PID
 from laymo.visualize import visualize
@@ -17,7 +17,10 @@ frame = cam.get_latest_frame()
 filepath = "data/test_img"
 roi = Params.ROI_STEER
 
-err = calc_error(img=frame, roi=roi)
+try:
+    err = calc_error(img=frame, roi=roi)
+except (BadFrame, LineNotDetected):
+    err = None
 
 output = steering_controller.calc_output(err)
 
