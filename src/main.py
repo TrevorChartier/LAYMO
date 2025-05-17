@@ -18,7 +18,6 @@ from laymo.logger import Logger
 
 logger = Logger(
     path="data/log_video.mp4",
-    fps = 30.0
 )
 car = Car(
     steering_pin=Params.STEERING_PIN,

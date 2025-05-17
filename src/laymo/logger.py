@@ -6,7 +6,7 @@ from laymo.params import Params
 
 class Logger():
     """ Handles video logging and visualization of the Laymo car's perception and control outputs."""
-    def __init__(self, path, fps):
+    def __init__(self, path):
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')  
         self.writer = cv2.VideoWriter('data/output_video.mp4',
                               fourcc, 50.0,
