@@ -15,6 +15,7 @@ from laymo.pid import PID
 from laymo.params import Params
 from laymo.logger import Logger
 
+force_stop = False
 
 logger = Logger(
     path="data/log_video.mp4",
@@ -33,9 +34,8 @@ steering_controller = PID(
 
 def handle_exit(signum, frame):
     """ Signal Handlers """
-    car.stop()
-    logger.close()
-    sys.exit(signum)
+    global force_stop
+    force_stop = True
 
 
 for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
@@ -52,6 +52,8 @@ def control_loop():
     time_off_line = 0
     steering_error = 0
     for i in range(Params.NUM_ITERATIONS):
+        if force_stop:
+            break
         set_speed_manual(i)
         frame = camera.get_latest_frame()
         
@@ -89,5 +91,6 @@ if __name__ == "__main__":
     print("Beginning Control Loop")
     time.sleep(1)
     control_loop()
-    print("Control Loop Ended")
     logger.close()
+    if force_stop:
+        sys.exit(1)
