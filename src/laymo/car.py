@@ -74,7 +74,6 @@ class Car:
         self.set_speed(-0.9)
         time.sleep(0.45)
         self.set_speed(0)
-        sys.exit(1)
 
     def __clamp(value, min_val, max_val):
         return min(max(value, min_val), max_val)

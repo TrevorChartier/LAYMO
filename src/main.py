@@ -34,6 +34,8 @@ steering_controller = PID(
 def handle_exit(signum, frame):
     """ Signal Handlers """
     car.stop()
+    logger.close()
+    sys.exit(signum)
 
 
 for sig in (signal.SIGINT, signal.SIGTERM, signal.SIGHUP):
@@ -79,13 +81,13 @@ def control_loop():
         
         img = visualize(frame, steering_error, car.current_steering_pos())
         logger.write(img)
-        
+    car.stop()    
     print(f"FPS: {np.round(i / (time.time() - start), 2)}")
-    car.stop()
 
 
 if __name__ == "__main__":
     print("Beginning Control Loop")
     time.sleep(1)
     control_loop()
+    print("Control Loop Ended")
     logger.close()
