@@ -24,7 +24,7 @@ class CameraManager:
                 "format": "RGB888"
             },
             controls={
-                "FrameDurationLimits": (int(1e6 / 50), int(1e6 / 50))  # Request 90 FPS
+                "FrameDurationLimits": (int(1e6 / 50), int(1e6 / 50))  # Request 50 FPS
             },
             colour_space=ColorSpace.Sycc()
         )
