@@ -17,4 +17,5 @@ class Logger():
         self.writer.write(frame)
         
     def close(self):
-        self.writer.release()
+        if self.writer.isOpened():
+            self.writer.release()
