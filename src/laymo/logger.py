@@ -1,7 +1,7 @@
 """Provides the Logger class for video logging."""
 
 import cv2
-from laymo.params import Params
+from laymo import params
 
 
 class Logger():
@@ -17,7 +17,7 @@ class Logger():
         self.__writer = cv2.VideoWriter(
             path,
             fourcc, 50.0,
-            (Params.FRAME_WIDTH, Params.FRAME_HEIGHT)
+            (params.FRAME_WIDTH, params.FRAME_HEIGHT)
         )
 
     def write(self, frame):
