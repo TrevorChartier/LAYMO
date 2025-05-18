@@ -1,4 +1,5 @@
-"""Entry point for running the Laymo Car controller.
+"""
+Entry point for running the Laymo Car controller.
 
 Initializes the Controller, sets up signal handlers, and starts the control loop.
 """

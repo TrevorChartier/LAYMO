@@ -1,4 +1,4 @@
-""" Hyperparameter Settings for LAYMO (utilized in main.py)"""
+"""Hyperparameter Settings for LAYMO"""
 
 class Params():
  

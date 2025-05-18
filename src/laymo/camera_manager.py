@@ -1,4 +1,10 @@
-"""This module implements the CameraManager class"""
+"""Provides the CameraManager class for capturing frames from the PiCamera.
+
+Usage:
+        camera = CameraManager()
+        frame = camera.get_latest_frame()
+"""
+
 
 from picamera2 import Picamera2
 from libcamera import ColorSpace
@@ -7,17 +13,11 @@ import numpy as np
 from laymo.params import Params
 
 class CameraManager:
-    """ 
-    Class for configuring and capturing frames from PiCamera
+    """Manages PiCamera initialization and frame capture."""
 
-    Usage:
-        camera = CameraManager()
-        frame = CameraManager.get_latest_frame()
-    """
     def __init__(self):
         self.__camera = Picamera2()
 
-        # Could play around with .align_configuration() for speed?
         camera_config = self.__camera.create_video_configuration(
             main={
                 "size": (Params.FRAME_WIDTH, Params.FRAME_HEIGHT),
@@ -33,10 +33,9 @@ class CameraManager:
         self.__camera.start()
 
     def get_latest_frame(self) -> np.ndarray:
-        """
-        Retrieve the most recent frame
+        """Retrieve the most recent frame.
 
         Returns: 
-            frame (np.ndarray): Copy of latest frame as a numpy array
+            np.ndarray: Copy of latest frame as a numpy array
         """
         return self.__camera.capture_array()

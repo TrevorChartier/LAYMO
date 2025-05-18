@@ -1,6 +1,7 @@
-""" 
-This module defines the functions necessary for detecting how far the
-center of a blue line is from the center of an img.
+"""Functions for detecting the horizontal offset of a blue line's center in an image.
+
+The module processes an image to determine how far the center of a detected blue line
+is from the image's horizontal center within a specified vertical region of interest.
 """
 
 import numpy as np
@@ -9,42 +10,38 @@ import cv2
 from laymo.params import Params
 
 
-class LineNotDetected(Exception): pass
+class LineNotDetected(Exception): 
+    """Raised when the blue line is not detected or insufficient pixels are found."""
+    pass
 
 
-class BadFrame(Exception): pass
+class BadFrame(Exception):
+    """Raised when too many pixels are detected, indicating a corrupted or invalid frame."""
+    pass
 
 
-def calc_error(img: np.ndarray, roi: tuple[float, float]):
-    """
+def calc_error(img: np.ndarray, roi: tuple[float, float]) -> float:
+    """Calculates normalized horizontal error of the blue line center relative to the image center.
     Calculates a normalized error value representing how far the detected line is from the
     horizontal center of the image within a specified vertical region of interest (ROI).
 
     Args:
-        img (np.ndarray): The input image in which to detect the line.
-        roi (tuple of float): A tuple (bottom, top) specifying the vertical region of
-                              interest as proportional values between 0.0 and 1.0. 
-                              - `bottom` defines the lower vertical bound of the ROI 
-                                (0.0 = bottom of the image).
-                              - `top` defines the upper vertical bound of the ROI 
-                                (1.0 = top of the image).
+        img (np.ndarray): Input image (BGR).
+        roi (tuple[float, float]): Vertical region of interest as (bottom, top) proportions,
+                                   where 0.0 is bottom and 1.0 is top of the image.
+                                   Must satisfy 0 ≤ bottom < top ≤ 1.
 
-    Returns:
-        float: A normalized error value in the range [-1, 1], where:
-               -1.0 indicates the line is at the far left,
-                0.0 indicates the line is perfectly centered,
-                1.0 indicates the line is at the far right.
-        None: If no line is detected in the image
+   Returns:
+        float: Normalized error in [-1, 1], where -1 is far left, 0 is center, and 1 is far right.
 
     Raises:
         ValueError: bottom must be less than top, and both must be within the range [0, 1].
+        LineNotDetected: If no line is detected.
+        BadFrame: If frame is invalid.
     """
     cropped_img = __crop(img, bottom=roi[0], top=roi[1])
     processed_img = preprocess(cropped_img)
     line_center = __get_line_center_x(processed_img)
-
-    if line_center is None:
-        return None  # No line in frame
 
     frame_center = img.shape[1] // 2
     error = line_center - frame_center
@@ -53,21 +50,20 @@ def calc_error(img: np.ndarray, roi: tuple[float, float]):
 
 
 def __crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
-    """
-    Crops the image vertically between the given proportional bounds.
+    """Vertically crops the image between the proportional bounds.
 
     See `calc_error` for more details on how the crop parameters are used.
 
     Args:
-        img (np.ndarray): The input image.
-        bottom (float): Lower vertical bound (0.0 = bottom, 1.0 = top).
-        top (float): Upper vertical bound. Must be greater than `bottom`.
+        img (np.ndarray): Input image.
+        bottom (float): Lower vertical bound (0.0 = bottom).
+        top (float): Upper vertical bound (1.0 = top), must be > bottom.
 
     Returns:
-        np.ndarray: The cropped image.
+        np.ndarray: Cropped image.
 
     Raises:
-        ValueError: See `calc_error`
+        ValueError: If bounds are not within [0, 1] or bottom ≥ top.
     """
     if (bottom >= top or bottom < 0 or bottom > 1 or top < 0 or top > 1):
         raise ValueError(
@@ -83,7 +79,14 @@ def __crop(img: np.ndarray, bottom: float, top: float) -> np.ndarray:
 
 
 def preprocess(img: np.ndarray) -> np.ndarray:
-    """Converts (BGR) image to a binary image based on blue channel"""
+    """Converts (BGR) image to a binary image based on blue channel
+    
+    Args:
+        img (np.ndarray): Input BGR image.
+
+    Returns:
+        np.ndarray: Binary image with white pixels indicating blue areas.
+    """
     img = cv2.GaussianBlur(img, (23, 23), 0)
     img = img[:, :, 0]
     img[img >= Params.BINARY_THRESHOLD] = 255
@@ -92,21 +95,17 @@ def preprocess(img: np.ndarray) -> np.ndarray:
 
 
 def __get_line_center_x(img: np.ndarray) -> int:
-    """"
-    Computes the horizontal center (x-coordinate) of the bounding box that contains
-    a blue line in the img.
+    """Compute horizontal center of the detected blue line in a binary image.
 
     Args:
-        img (np.ndarray): A 3D NumPy array representing the input img. The
-        img is expected to contain a single prominent blue line.
+        img (np.ndarray): Binary image where line pixels are 255.
 
     Returns:
-        int: The column index of the center of the bounding box surrounding the
-        detected line in the img.
-        
+        int: X-coordinate of the line center.
+
     Raises:
-        LineNotDetected: If too few pixels are detected as the line.
-        BadFrame: If too many pixels are detected as the line. 
+        LineNotDetected: If detected line pixels are below minimum threshold.
+        BadFrame: If detected pixels exceed maximum threshold, indicating invalid frame.
     """
     rows, cols = np.where(img == 255)
     if cols.size < Params.MIN_LINE_THRESHOLD * img.size:
