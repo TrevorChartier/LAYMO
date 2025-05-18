@@ -11,7 +11,7 @@ from picamera2 import Picamera2
 from libcamera import ColorSpace
 import numpy as np
 
-from laymo.params import Params
+from laymo import params
 
 class CameraManager:
     """Manages PiCamera initialization and frame capture."""
@@ -21,7 +21,7 @@ class CameraManager:
 
         camera_config = self.__camera.create_video_configuration(
             main={
-                "size": (Params.FRAME_WIDTH, Params.FRAME_HEIGHT),
+                "size": (params.FRAME_WIDTH, params.FRAME_HEIGHT),
                 "format": "RGB888"
             },
             controls={
