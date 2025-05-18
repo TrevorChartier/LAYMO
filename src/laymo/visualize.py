@@ -6,7 +6,7 @@ import numpy as np
 import cv2
 
 from laymo.line_detector import preprocess
-from laymo.params import Params
+from laymo import params
 
 
 def visualize(
@@ -27,7 +27,7 @@ def visualize(
         np.ndarray: Annotated image with ROI lines, error position, and
             steering text overlayed.
     """
-    roi = Params.ROI_STEER
+    roi = params.ROI_STEER
     img_h, img_w = img.shape[:2]
 
     # Preprocess and convert grayscale to color for blending

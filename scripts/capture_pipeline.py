@@ -5,17 +5,17 @@ import cv2
 
 from laymo.camera_manager import CameraManager
 from laymo.line_detector import calc_error, preprocess, BadFrame, LineNotDetected
-from laymo.params import Params
+from laymo.params import params
 from laymo.pid import PID
 from laymo.visualize import visualize
 
 cam = CameraManager()
 steering_controller = PID(
-    kp=Params.KP_STEER, ki=Params.KI_STEER, kd=Params.KD_STEER)
+    kp=params.KP_STEER, ki=params.KI_STEER, kd=params.KD_STEER)
 
 frame = cam.get_latest_frame()
 filepath = "data/test_img"
-roi = Params.ROI_STEER
+roi = params.ROI_STEER
 
 try:
     err = calc_error(img=frame, roi=roi)

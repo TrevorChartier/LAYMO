@@ -9,7 +9,7 @@ specified vertical region of interest.
 import numpy as np
 import cv2
 
-from laymo.params import Params
+from laymo import params
 
 
 class LineNotDetected(Exception):
@@ -98,8 +98,8 @@ def preprocess(img: np.ndarray) -> np.ndarray:
     """
     img = cv2.GaussianBlur(img, (23, 23), 0)
     img = img[:, :, 0]
-    img[img >= Params.BINARY_THRESHOLD] = 255
-    img[img < Params.BINARY_THRESHOLD] = 0
+    img[img >= params.BINARY_THRESHOLD] = 255
+    img[img < params.BINARY_THRESHOLD] = 0
     return img
 
 
@@ -118,8 +118,8 @@ def __get_line_center_x(img: np.ndarray) -> int:
             indicating invalid frame.
     """
     rows, cols = np.where(img == 255)
-    if cols.size < Params.MIN_LINE_THRESHOLD * img.size:
+    if cols.size < params.MIN_LINE_THRESHOLD * img.size:
         raise LineNotDetected()
-    if cols.size > Params.MAX_LINE_THRESHOLD * img.size:
+    if cols.size > params.MAX_LINE_THRESHOLD * img.size:
         raise BadFrame()
     return np.round(np.mean(cols), 0)
