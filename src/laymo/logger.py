@@ -30,5 +30,5 @@ class Logger():
 
     def close(self):
         """Releases the video writer if it is open."""
-        if self.writer.isOpened():
-            self.writer.release()
+        if self.__writer.isOpened():
+            self.__writer.release()
