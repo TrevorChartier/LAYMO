@@ -25,7 +25,7 @@ class Car:
     def __init__(
         self, steering_pin: int, throttle_pin: int, max_speed: float = 0.8
     ):
-         """Initializes the car controller.
+        """Initializes the car controller.
 
         Args:
             steering_pin (int): PWM channel for steering servo.
@@ -63,7 +63,7 @@ class Car:
             self.__steering.angle = self.__CENTER + angle_from_center      
 
     def set_speed(self, speed: float):
-       """Sets the car speed, clamped and scaled to physical limits.
+        """Sets the car speed, clamped and scaled to physical limits.
 
         Args:
             speed (float): Speed from -1 (full reverse) to 1 (full forward).
