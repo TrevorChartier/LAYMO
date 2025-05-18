@@ -22,13 +22,16 @@ class Car:
     __CENTER = 83
     __MAX_ANGLE = 35
 
-    def __init__(self, steering_pin: int, throttle_pin: int, max_speed: float = 0.8):
+    def __init__(
+        self, steering_pin: int, throttle_pin: int, max_speed: float = 0.8
+    ):
          """Initializes the car controller.
 
         Args:
             steering_pin (int): PWM channel for steering servo.
             throttle_pin (int): PWM channel for throttle servo.
-            max_speed (float, optional): Maximum magnitude of speed (0 to 0.8). Defaults to 0.8.
+            max_speed (float, optional): Maximum magnitude of speed 
+                (0 to 0.8). Defaults to 0.8.
         """
         kit = ServoKit(channels=16)
         self.__steering = kit.servo[steering_pin]
@@ -40,15 +43,17 @@ class Car:
         self.__MAX_SPEED = min(0.8, max_speed)
 
     def current_steering_pos(self):
-        """"Retrieves the current steering position as a value in the range [-1,1]"""
+        """"Retrieves the current steering position as a value in the
+        range [-1,1]
+        """
         return self.__current_steering_pos
 
     def set_steering(self, position: float):
         """Sets the steering position, clamped to physical limits.
 
         Args:
-            position (float or None): Steering position from -1 (full left)
-                to 1 (full right). None means no change.
+            position (float or None): Steering position from -1 
+                (full left) to 1 (full right). None means no change.
         """
         if position is not None:
             clamped_position = Car.__clamp(position, min_val=-1, max_val=1)

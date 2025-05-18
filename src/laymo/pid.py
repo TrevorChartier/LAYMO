@@ -12,7 +12,8 @@ class PID:
     """Implements a Proportional-Integral-Derivative (PID) controller.
 
     The PID controller calculates a corrective output based on the
-    current error, its cumulative sum (integral), and the rate of change (derivative).
+    current error, its cumulative sum (integral), and the rate of
+    change (derivative).
     """
 
     def __init__(self, ki: float, kp: float, kd: float):
@@ -34,12 +35,12 @@ class PID:
         Calculate the PID controller output based on the current error.
 
         Args:
-            error (float or None): The difference between the setpoint and the
-            process variable. If None, the output is None.
+            error (float or None): The difference between the setpoint
+            and the actual value. If None, the output is None.
 
         Returns:
-            float or None: The PID correction output, rounded to two decimals,
-            or None if input error is None.
+            float or None: The PID correction output, rounded to two 
+            decimals, or None if input error is None.
         """
         if error is None:
             return None

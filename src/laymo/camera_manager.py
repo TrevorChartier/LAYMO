@@ -1,4 +1,5 @@
-"""Provides the CameraManager class for capturing frames from the PiCamera.
+"""Provides the CameraManager class for capturing frames from the 
+PiCamera.
 
 Usage:
         camera = CameraManager()
@@ -24,7 +25,8 @@ class CameraManager:
                 "format": "RGB888"
             },
             controls={
-                "FrameDurationLimits": (int(1e6 / 50), int(1e6 / 50))  # Request 50 FPS
+                # Request 50 FPS
+                "FrameDurationLimits": (int(1e6 / 50), int(1e6 / 50))  
             },
             colour_space=ColorSpace.Sycc()
         )
