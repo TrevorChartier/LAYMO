@@ -5,7 +5,7 @@ import cv2
 
 from laymo.camera_manager import CameraManager
 from laymo.line_detector import calc_error, preprocess, BadFrame, LineNotDetected
-from laymo.params import params
+from laymo import params
 from laymo.pid import PID
 from laymo.visualize import visualize
 
