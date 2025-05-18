@@ -31,7 +31,7 @@ class PID:
         self.__error_sum = 0.0
 
     def calc_output(self, error: float | None) -> float | None:
-       """
+        """
         Calculate the PID controller output based on the current error.
 
         Args:
