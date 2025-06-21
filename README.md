@@ -34,7 +34,7 @@ The project emphasizes:
 This package is structured for standard Python packaging. If needed in another project:
 
 ```bash
-pip install git+https://github.com/yourname/laymo.git
+pip install git+https://github.com/TrevorChartier/LAYMO.git
 ```
 All dependencies are automatically installed to your environment.
 
