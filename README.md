@@ -2,19 +2,40 @@
 
 **Autonomous Vision-Based Line-Following RC Car with Raspberry Pi**
 
+![Demo GIF](https://github.com/TrevorChartier/TrevorChartier.github.io/blob/main/assets/project-photos/laymo/split_screen.gif)
+
 ---
 
 ## Overview  
-Laymo is designed and built as an autonomous RC car platform, using a Raspberry Pi and camera module to detect and follow a colored tape line in real time. It demonstrates embedded hardware integration, low-latency computer vision, and closed-loop control on resource-constrained hardware. It is implemented in Python and structured as a pip-installable package using `pyproject.toml`.
+Laymo is an autonomous RC car platform that uses a Raspberry Pi and camera module to detect and follow a colored tape line in real time. It demonstrates embedded hardware integration, low-latency computer vision, and closed-loop control on resource-constrained hardware. It is implemented in Python and structured as a pip-installable package.
+
+
+For an in-depth look at the methods: [View the Report](https://trevorchartier.com/assets/project-photos/laymo/LAYMO_Methods.pdf)
 
 ---
 
-## Key Features  
-- **Real-time line detection** using channel isolated thresholding 
-- **PID-based control** for smooth, proportional steering corrections
+## Software Features
+- **Modularity Codebase** structured into reusable modules for perception, control, and interfacing that can be imported into other projects via pip:
+  
+   ![UML](https://github.com/TrevorChartier/TrevorChartier.github.io/blob/main/assets/project-photos/laymo/uml.png)
+  
+- **Real-time line detection** using channel isolated thresholding:
+  
+  ![Vision Pipeline](https://github.com/TrevorChartier/TrevorChartier.github.io/blob/main/assets/project-photos/laymo/cv_pipe.png)
+
+  
+- **PID-based control** for smooth, proportional steering corrections:
+
+$$
+u(t) = K_p e(t) + K_i \int_0^t e(\tau)\,d\tau + K_d \frac{de(t)}{dt}
+$$
 
 ---
-### Hardware
+## Hardware
+
+![Car Components](https://github.com/TrevorChartier/TrevorChartier.github.io/blob/main/assets/project-photos/laymo/labeled_car.png)
+
+
 Laymo interfaces with a custom hardware stack including:
 
 - Commercially available RC car
@@ -23,11 +44,9 @@ Laymo interfaces with a custom hardware stack including:
 - DC-DC Buck converter for regulating voltage of on-board power supply
 - Arducam 5MP OV5647 camera
 
-### Software
-The project emphasizes:
 
-- **Modularity**: Code is structured into reusable modules for perception, control, and interfacing that can be imported into other projects via pip.
-- **Hardware-software integration**: Designed to run on physical systems with low-latency (50hz) control loop.
+![Wiring Diagram](https://github.com/TrevorChartier/TrevorChartier.github.io/blob/main/assets/project-photos/laymo/wiring.png)
+
 
 ## Installation
 
