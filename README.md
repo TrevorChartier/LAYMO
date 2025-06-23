@@ -1,6 +1,6 @@
 # LAYMO
 
-**Autonomous Vision-Based Line-Following RC Car with Raspberry Pi**
+**Autonomous Vision-Based Line-Following Car with Raspberry Pi**
 
 ![Demo GIF](https://github.com/TrevorChartier/TrevorChartier.github.io/blob/main/assets/project-photos/laymo/split_screen.gif)
 
