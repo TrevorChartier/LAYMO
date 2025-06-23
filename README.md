@@ -15,7 +15,7 @@ For an in-depth look at the methods: [View the Report](https://trevorchartier.co
 ---
 
 ## Software Features
-- **Modularity Codebase** structured into reusable modules for perception, control, and interfacing that can be imported into other projects via pip:
+- **Object-Oriented Codebase** structured into reusable modules for perception, control, and interfacing that can be imported into other projects via pip:
   
    ![UML](https://github.com/TrevorChartier/TrevorChartier.github.io/blob/main/assets/project-photos/laymo/uml.png)
   
